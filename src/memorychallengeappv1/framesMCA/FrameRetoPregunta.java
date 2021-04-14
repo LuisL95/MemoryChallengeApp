@@ -86,8 +86,12 @@ public class FrameRetoPregunta extends javax.swing.JDialog  {
         });
 
         jTextAreaRespuesta.setColumns(20);
+        jTextAreaRespuesta.setLineWrap(true);
         jTextAreaRespuesta.setRows(5);
+        jTextAreaRespuesta.setWrapStyleWord(true);
         jScrollPane2.setViewportView(jTextAreaRespuesta);
+        jTextAreaRespuesta.setLineWrap(true);
+        jTextAreaRespuesta.setWrapStyleWord(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
 import memorychallengeappv1.framesMCA.DialogRetoPregunta;
+import memorychallengeappv1.framesMCA.FrameFelicitacionFinalBloque;
 import memorychallengeappv1.framesMCA.FrameRetoPregunta;
 
 
@@ -40,38 +41,22 @@ public class GestionEjecucionBloque extends Thread{
         {
            
             try {
+               
                 this.sleep(tiempo);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GestionEjecucionBloque.class.getName()).log(Level.SEVERE, null, ex);
             }
              indiceAleatorio(b.enunciados);
-//            if(resultado)
-//            {
-//                tiempo = tiempo+tiempo;
-//                
-//                JOptionPane.showMessageDialog(null, "respuesta CORRECTA");
-//                System.out.println("okidoki");
-//                
-//            }
-//            else
-//            {
-//                JOptionPane.showMessageDialog(null, "respuesta INCORRECTA :C");
-//                System.out.println("NOT oki :c");
-//            }
+
             
         }
-//        
-//        if(count < tiempo)
-//        {
-//            JOptionPane.showMessageDialog(null, "REPETICIÓN FINALIZADA");
-//        }
-//        else
-//        {
-//            JOptionPane.showMessageDialog(null, "Debes establecer un tiempo de repeticion mayor al de INICIO");
-//        }
-        
-        
-        
+        FrameFelicitacionFinalBloque fffb =  new FrameFelicitacionFinalBloque();
+        fffb.setjLabelNombreBloque(b.getNombre());
+        fffb.setVisible(true);
+        Bloque.bloques.remove(b);
+        ejemplo.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
+       // ejemplo.fp.jLabelNumeroBloques.setVisible(true);
+       ejemplo.fp.repaint();
     }
       String pregunta;
       String respuesta;
@@ -104,7 +89,7 @@ public class GestionEjecucionBloque extends Thread{
                 drp.setVisible(true);
                
                 drp.setModal(true);
-                if(drp.jTextAreaRespuesta.getText().equals(pregunta))
+                if(drp.jTextAreaRespuesta.getText().equals(respuesta))
                         {    
                             JOptionPane.showMessageDialog(null, "respuesta CORRECTA");
                             System.out.println("okidoki");  

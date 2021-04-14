@@ -114,7 +114,7 @@ public class FrameBloque extends javax.swing.JFrame{
 
         JComboBoxDuTotal.setBackground(new java.awt.Color(232, 230, 226));
         JComboBoxDuTotal.setFont(new java.awt.Font("Segoe UI Symbol", 0, 11)); // NOI18N
-        JComboBoxDuTotal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"",  "6 minutos", "10 minutos", "15 minutos", "30 minutos", "60 minutos", "2 horas" }));
+        JComboBoxDuTotal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"","3 minutos",  "6 minutos", "10 minutos", "15 minutos", "30 minutos", "60 minutos", "2 horas" }));
         JComboBoxDuTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JComboBoxDuTotalActionPerformed(evt);
@@ -148,7 +148,7 @@ public class FrameBloque extends javax.swing.JFrame{
 
         JComboBoxDuInicial.setBackground(new java.awt.Color(232, 230, 226));
         JComboBoxDuInicial.setFont(new java.awt.Font("Segoe UI Symbol", 0, 11)); // NOI18N
-        JComboBoxDuInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "30 segundos", "", "Item 3", "Item 4" }));
+        JComboBoxDuInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"","15 segundos", "30 segundos", "", "Item 3", "Item 4" }));
         JComboBoxDuInicial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JComboBoxDuInicialActionPerformed(evt);
@@ -274,11 +274,14 @@ public class FrameBloque extends javax.swing.JFrame{
    
       JPanel p1 = new JPanel();
       p1.setBounds(30, 30, 600, 300);
-       
+      
+      
+
        JTextArea ta1 = new JTextArea();
           ta1.setColumns(30);
           ta1.setRows(10);
-            
+          ta1.setLineWrap(true);
+          ta1.setWrapStyleWord(true);
             
 
             p1.add(ta1);
@@ -307,6 +310,8 @@ public class FrameBloque extends javax.swing.JFrame{
                  JTextArea ta2 = new JTextArea();
                  ta2.setColumns(30);
                  ta2.setRows(10);
+                 ta2.setLineWrap(true);
+                 ta2.setWrapStyleWord(true);
                  p2.add(ta2);
   //+++++++++++++++ESCRITURA DE  LA RESPUESTA A RESPONDER++++++++++++++++++++++++++++++++++++++++++++   
   
@@ -440,6 +445,7 @@ public class FrameBloque extends javax.swing.JFrame{
    
     long duracionTotal()
     {
+        String[] min3 = {"","15 segundos", "30 segundos"};
         String[] min6 = {"","15 segundos", "30 segundos", "1 minuto"};
         String[] min10 = {"","15 segundos", "30 segundos", "1 minuto", "2 minutos"};
         String[] min15 = {"","15 segundos", "30 segundos", "1 minuto", "2 minutos", "4 minutos"};
@@ -449,7 +455,13 @@ public class FrameBloque extends javax.swing.JFrame{
         String[] horas2 = {"","15 segundos", "30 segundos", "1 minuto",
             "2 minutos", "4 minutos", "10 minutos", "15 minutos", "30 minutos"};
         
-           if(this.JComboBoxDuTotal.getSelectedItem().toString().equals("6 minutos"))
+        if(this.JComboBoxDuTotal.getSelectedItem().toString().equals("3 minutos"))
+           {
+               frDuracionTotal = 180000;
+               JComboBoxDuInicial.setModel(new javax.swing.DefaultComboBoxModel<>(min3));
+
+           } 
+          else if(this.JComboBoxDuTotal.getSelectedItem().toString().equals("6 minutos"))
            {
                frDuracionTotal = 360000;
                JComboBoxDuInicial.setModel(new javax.swing.DefaultComboBoxModel<>(min6));

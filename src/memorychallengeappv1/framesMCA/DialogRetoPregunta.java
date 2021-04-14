@@ -21,8 +21,7 @@ public class DialogRetoPregunta extends javax.swing.JDialog {
          Toolkit.getDefaultToolkit().beep();
       //  this.jTextAreaPregunta.setText(pregunta);
         initComponents();
-        
-    }
+    }   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,6 +58,8 @@ public class DialogRetoPregunta extends javax.swing.JDialog {
         jTextAreaRespuesta.setFont(new java.awt.Font("Monospaced", 3, 12)); // NOI18N
         jTextAreaRespuesta.setRows(5);
         jScrollPane2.setViewportView(jTextAreaRespuesta);
+        jTextAreaRespuesta.setLineWrap(true);
+        jTextAreaRespuesta.setWrapStyleWord(true);
 
         jButtonAceptar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButtonAceptar.setText("Aceptar");
