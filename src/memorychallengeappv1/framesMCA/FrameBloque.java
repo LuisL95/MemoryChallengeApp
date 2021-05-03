@@ -11,14 +11,21 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Boolean.FALSE;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
 import memorychallengeappv1.Bloque;
 import memorychallengeappv1.Enunciado;
 import memorychallengeappv1.GestionEjecucionBloque;
 import memorychallengeappv1.MemoryChallengeAppV1;
+import memorychallengeappv1.connections.ConnectionManager;
 import memorychallengeappv1.ejemplo;
 
 
@@ -598,6 +605,20 @@ public class FrameBloque extends javax.swing.JFrame{
            
            this.dispose();
        }
+       String query =  "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial) VALUES("+bloque.getNombre()+","+bloque.getDuracionTotal()+","+bloque.getDuracionInicial()+")";
+       try (
+		Connection conn = ConnectionManager.getConnection();
+		Statement stmt = conn.createStatement();
+				
+		
+               ){
+           int rs = stmt.executeUpdate(
+                "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial)"
+                        + " VALUES("+"'"+bloque.getNombre()+"',"+"'"+bloque.getDuracionTotal()+"',"+"'"+bloque.getDuracionInicial()+"'"+")");
+				
+           System.out.println(rs);} catch (SQLException e) {
+			ConnectionManager.processException(e);
+		} 
        
     }//GEN-LAST:event_bAceptarMouseClicked
 

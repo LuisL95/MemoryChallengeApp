@@ -48,8 +48,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         jButtonParar = new javax.swing.JButton();
         jLabelNumeroBloques = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(27, 163, 156));
         jPanel1.setForeground(new java.awt.Color(204, 51, 0));
 
