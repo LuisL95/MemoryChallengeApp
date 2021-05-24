@@ -10,7 +10,7 @@ public class Enunciado  {
         //VARIABLES
    private String codigoEnunciado;  
    private String respuesta;
-   private  String pregunta;
+   private String pregunta;
    
    
    //GETTERS

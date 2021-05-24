@@ -14,8 +14,8 @@ public class MemoryChallengeAppV1 {
     public static void main(String[] args) {
 //      FramePrincipal  fp = new FramePrincipal();
 //        fp.setVisible(true);
-        
-        ejemplo.metodo();
+        ejemplo ej = new ejemplo();
+        ej.inicializador();
         
 
        

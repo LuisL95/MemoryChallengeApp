@@ -2,6 +2,10 @@
 package memorychallengeappv1;
 
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
+import memorychallengeappv1.connections.ConnectionManager;
 import memorychallengeappv1.framesMCA.DialogRetoPregunta;
 import memorychallengeappv1.framesMCA.FrameFelicitacionFinalBloque;
 import memorychallengeappv1.framesMCA.FrameRetoPregunta;
@@ -26,8 +31,7 @@ public class GestionEjecucionBloque extends Thread{
     {
     this.b = b;
     }
-    
-    
+      
     
     @Override
     public void run() 
@@ -116,10 +120,29 @@ public class GestionEjecucionBloque extends Thread{
             
              resultado = false;
         }
+
         System.out.println("tiempo "+tiempo);
        fallo = 0; 
-        return resultado;
+        
+        
+        try {
+            Connection conn = ConnectionManager.getConnection();
+            PreparedStatement stmt = conn.prepareStatement
+                    ( 
+           "UPDATE db_memorychallengeapp.table_bloqueactivocorto SET tiempo_actual = ? WHERE ID_BLOQUE_AC = ?"
+                    );
+            stmt.setLong(1, tiempo);
+            stmt.setInt(2, b.getID());
+            
+            int updt = stmt.executeUpdate();
+            stmt.close();
+            
+        } catch (SQLException e) {
+            ConnectionManager.processException(e);
+        }
        
+        
+        return resultado;
     } 
     
 //     public String responder()

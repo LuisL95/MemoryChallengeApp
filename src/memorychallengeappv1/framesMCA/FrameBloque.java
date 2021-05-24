@@ -373,6 +373,7 @@ public class FrameBloque extends javax.swing.JFrame{
                              Color colorFore = new Color(214, 234, 248);
                             bt.setForeground(colorFore);
                             listaBotones.add(bt);
+  //+++++++++++++++++++AGREGACIÓN DE ENUNCIADO AL BLOQUE+++++++++++++++++++++++++++++++
                             bloque.enunciados.add(enunciadoNuevo);
                             
                             
@@ -599,27 +600,61 @@ public class FrameBloque extends javax.swing.JFrame{
            ejemplo.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
            ejemplo.fp.jLabelNumeroBloques.setVisible(true);
            
-//++++++++++++++++++++++++++++++ACTIVACION DE LA REITERACION DE PREGUNTAS+++++++++++++++++++++++++++++++++++
-         geb = new GestionEjecucionBloque(bloque);
-           geb.start();
            
-           this.dispose();
-       }
-       String query =  "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial) VALUES("+bloque.getNombre()+","+bloque.getDuracionTotal()+","+bloque.getDuracionInicial()+")";
-       try (
+
+//------------------------- SENTENCIAS CREACION REGISTROS BLOQUE Y ENUNCIADO-------------------------
+       
+  //+++++++iNSERSION DE BLOQUE A TABLA BLOQUE+++++++++++++++++++
+        try (
 		Connection conn = ConnectionManager.getConnection();
 		Statement stmt = conn.createStatement();
 				
 		
                ){
            int rs = stmt.executeUpdate(
-                "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial)"
-                        + " VALUES("+"'"+bloque.getNombre()+"',"+"'"+bloque.getDuracionTotal()+"',"+"'"+bloque.getDuracionInicial()+"'"+")");
-				
-           System.out.println(rs);} catch (SQLException e) {
-			ConnectionManager.processException(e);
+                "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial,estado)"
+                        + " VALUES("+"'"+bloque.getNombre()+"',"+bloque.getDuracionTotal()+","+bloque.getDuracionInicial()+","+1+")");
+
+   //+++++++iNSERSION DE ENUNCIADO A TABLA ENUNCIADO+++++++++++++++++++
+            for( Enunciado e: bloque.enunciados)
+            {		
+                rs = stmt.executeUpdate(
+
+
+                   "INSERT INTO db_memorychallengeapp.table_enunciado(ID_BLOQUE_E,COD_ENUNCIADO,pregunta, respuesta)"
+                           + " VALUES((SELECT distinct (LAST_INSERT_ID()) FROM db_memorychallengeapp.table_bloque),'"
+                           +e.getCodigoEnunciado()+
+                           "',"+"'"+e.getPregunta()+
+                           "',"+"'"+e.getRespuesta()+"'"+")");
+
+
+            }
+        //+++++++++++AGREGACION DE ID GENERADO EN LA BD A VARIABLE ID DE BLOQUE+++++++++++++++++++  
+        
+               ResultSet idGenerado = stmt.executeQuery(
+                "SELECT   (LAST_INSERT_ID()) FROM  db_memorychallengeapp.table_bloque");
+               if(idGenerado.next())
+               {
+                bloque.setID(Integer.parseInt(idGenerado.getString(1)));
+               }
+               
+                
+           System.out.println("id generado: "+bloque.getID());}
+        catch (SQLException e) 
+                {
+                    ConnectionManager.processException(e);
 		} 
+      
        
+       
+       
+       
+ //++++++++++++++++++++++++++++++ACTIVACION DE LA REITERACION DE PREGUNTAS+++++++++++++++++++++++++++++++++++
+         geb = new GestionEjecucionBloque(bloque);
+           geb.start();
+
+           this.dispose();
+       }
     }//GEN-LAST:event_bAceptarMouseClicked
 
  
