@@ -47,12 +47,13 @@ public class FramePrincipal extends javax.swing.JFrame {
         bNuevoBloque = new javax.swing.JButton();
         jButtonParar = new javax.swing.JButton();
         jLabelNumeroBloques = new javax.swing.JLabel();
+        BotonFinalizados = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(27, 163, 156));
         jPanel1.setForeground(new java.awt.Color(204, 51, 0));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(222, 238, 239));
         jLabel1.setText("Memory Challenge App");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -74,7 +75,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(228, 233, 240));
 
-        bNuevoBloque.setBackground(new java.awt.Color(199, 195, 195));
+        bNuevoBloque.setBackground(new java.awt.Color(163, 181, 179));
         bNuevoBloque.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         bNuevoBloque.setForeground(new java.awt.Color(51, 51, 51));
         bNuevoBloque.setText("Nuevo bloque de memoria ");
@@ -101,19 +102,33 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jLabelNumeroBloques.setText("Bloques existentes: ");
 
+        BotonFinalizados.setBackground(new java.awt.Color(0, 153, 204));
+        BotonFinalizados.setForeground(new java.awt.Color(255, 255, 255));
+        BotonFinalizados.setText("Finalizados");
+        BotonFinalizados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonFinalizadosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(132, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButtonParar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelNumeroBloques))
-                    .addComponent(bNuevoBloque, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(113, 113, 113))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButtonParar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelNumeroBloques))
+                            .addComponent(bNuevoBloque, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(113, 113, 113))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(BotonFinalizados)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +139,9 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonParar)
                     .addComponent(jLabelNumeroBloques))
-                .addGap(53, 53, 53))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BotonFinalizados)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,6 +194,15 @@ public class FramePrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonPararActionPerformed
 
+    private void BotonFinalizadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonFinalizadosActionPerformed
+        // TODO add your handling code here:
+        
+         Color color = new Color(75,184,215);
+         BotonFinalizados.setBackground(color);
+         FrameBloqueInactivo fbi = new FrameBloqueInactivo();
+         fbi.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_BotonFinalizadosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,6 +240,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonFinalizados;
     private javax.swing.JButton bNuevoBloque;
     public javax.swing.JButton jButtonParar;
     private javax.swing.JLabel jLabel1;

@@ -61,6 +61,7 @@ public class GestionEjecucionBloque extends Thread{
         ejemplo.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
        // ejemplo.fp.jLabelNumeroBloques.setVisible(true);
        ejemplo.fp.repaint();
+       
     }
       String pregunta;
       String respuesta;
@@ -113,6 +114,44 @@ public class GestionEjecucionBloque extends Thread{
         {
             tiempo = tiempo+tiempo;
             resultado = true;
+            
+                try {
+                Connection conn = ConnectionManager.getConnection();
+                conn.setAutoCommit(false);
+                PreparedStatement stmt = conn.prepareStatement
+
+                ( 
+               "UPDATE db_memorychallengeapp.table_bloqueactivocorto SET tiempo_actual = ? WHERE ID_BLOQUE_AC = ?"
+                );
+                stmt.setLong(1, tiempo);
+                stmt.setInt(2, b.getID());
+                int updt = stmt.executeUpdate();
+
+                if(tiempo>tiempoTotal)
+                {
+                       stmt = conn.prepareStatement
+                       (
+                       "UPDATE db_memorychallengeapp.table_bloque SET estado = 0 WHERE ID_BLOQUE = ?"
+                       );
+                       stmt.setInt(1, b.getID());
+                       updt = stmt.executeUpdate();
+
+                       stmt = conn.prepareStatement
+                       (
+                       "DELETE FROM db_memorychallengeapp.table_bloqueactivocorto WHERE ID_BLOQUE_AC = ?"
+                       );
+                       stmt.setInt(1, b.getID());
+                       updt = stmt.executeUpdate();
+                }
+
+
+                conn.commit();
+                stmt.close();
+            
+                } catch (SQLException e) 
+                {
+                 ConnectionManager.processException(e);
+                }
            
         }
         else
@@ -121,25 +160,11 @@ public class GestionEjecucionBloque extends Thread{
              resultado = false;
         }
 
-        System.out.println("tiempo "+tiempo);
+       System.out.println("tiempo "+tiempo);
        fallo = 0; 
         
-        
-        try {
-            Connection conn = ConnectionManager.getConnection();
-            PreparedStatement stmt = conn.prepareStatement
-                    ( 
-           "UPDATE db_memorychallengeapp.table_bloqueactivocorto SET tiempo_actual = ? WHERE ID_BLOQUE_AC = ?"
-                    );
-            stmt.setLong(1, tiempo);
-            stmt.setInt(2, b.getID());
-            
-            int updt = stmt.executeUpdate();
-            stmt.close();
-            
-        } catch (SQLException e) {
-            ConnectionManager.processException(e);
-        }
+         
+
        
         
         return resultado;

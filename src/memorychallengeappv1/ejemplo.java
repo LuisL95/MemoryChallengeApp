@@ -78,18 +78,23 @@ public class ejemplo {
                              }
                      Bloque.bloques.add(b);
 
-                     for(Bloque bloqueActivo: Bloque.bloques) 
-                     {
                          System.out.println(b.getNombre());
                          System.out.println(b.getID());
                          System.out.println(b.getDuracionTotal());
+                }
+                for(Bloque bloqueActivo: Bloque.bloques) 
+                     {
+                        
                         GestionEjecucionBloque geb = new GestionEjecucionBloque(bloqueActivo);
                         geb.start();
                      }
-//                     this.fp.jButtonParar.setVisible(true);
-//                     this.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
-//                     this.fp.jLabelNumeroBloques.setVisible(true);
+                if(Bloque.bloques.size()>0)
+                {
+                    this.fp.jButtonParar.setVisible(true);
+                    this.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
+                    this.fp.jLabelNumeroBloques.setVisible(true);
                 }
+                     
 
             } catch (SQLException ex) {
                 Logger.getLogger(ejemplo.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,8 +105,10 @@ public class ejemplo {
     
     public void inicializador()
     {
+       
         inicializadorFrame();
         bloquesActivosCerrados();
+        
     }
 
   
