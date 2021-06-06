@@ -19,15 +19,17 @@ import javax.swing.border.LineBorder;
  * @author ser
  */
 public class FrameEleccionTipoBloque extends javax.swing.JFrame {
-
+    int id_bloque = 0;
     /**
      * Creates new form FrameEleccionTipoBloque
      */
-    public FrameEleccionTipoBloque() {
+    public FrameEleccionTipoBloque(int id_bloqueL) {
+        this.id_bloque = id_bloqueL;
         initComponents();
         setLocationRelativeTo(null);
         buttons();
         setResizable(false);
+        setVisible(true);
     }
 
     /**
@@ -118,7 +120,7 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
-                    FrameConfigBloqueLargo fcbl = new FrameConfigBloqueLargo();
+                    FrameConfigBloqueLargo fcbl = new FrameConfigBloqueLargo(id_bloque);
                     fcbl.setVisible(true);
                     dispose();
                     
@@ -185,7 +187,7 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameEleccionTipoBloque().setVisible(true);
+         //       new FrameEleccionTipoBloque().setVisible(true);
             }
         });
     }

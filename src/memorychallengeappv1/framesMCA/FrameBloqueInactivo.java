@@ -35,6 +35,7 @@ import memorychallengeappv1.connections.ConnectionManager;
  */
 public class FrameBloqueInactivo extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form FrameBloqueInactivo
      */
@@ -43,6 +44,7 @@ public class FrameBloqueInactivo extends javax.swing.JFrame {
         bloquesInactivosVista();
         setLocationRelativeTo(null);
         setResizable(false);
+       
     }
 
     /**
@@ -149,7 +151,7 @@ public class FrameBloqueInactivo extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
-                   FrameEleccionTipoBloque fetb = new FrameEleccionTipoBloque();
+                   FrameEleccionTipoBloque fetb = new FrameEleccionTipoBloque(idBloque);
                    fetb.setVisible(true);
                     
                 }

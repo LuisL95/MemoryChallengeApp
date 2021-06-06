@@ -5,8 +5,24 @@
  */
 package memorychallengeappv1.framesMCA;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+//import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import memorychallengeappv1.GestionEjecucionBloqueLargo;
+import memorychallengeappv1.connections.ConnectionManager;
 
 /**
  *
@@ -14,14 +30,18 @@ import java.awt.event.ActionListener;
  */
 public class FrameConfigBloqueLargo extends javax.swing.JFrame {
 
+    private int id_bloque;
+    private int diasTotales = 0;
     /**
      * Creates new form FrameConfigBloqueLargo
      */
-    public FrameConfigBloqueLargo() {
+    public FrameConfigBloqueLargo(int id_bloqueL) {
+        this.id_bloque = id_bloqueL;
         initComponents();
         itemsComboBox();
         aceptarOption();
          setLocationRelativeTo(null);
+         
     }
     
     
@@ -110,9 +130,20 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
         );
 
+        jComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxActionPerformed(evt);
+            }
+        });
+
         jButtonAceptar.setBackground(new java.awt.Color(9, 154, 213));
         jButtonAceptar.setForeground(new java.awt.Color(255, 255, 255));
         jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelInicialLayout = new javax.swing.GroupLayout(jPanelInicial);
         jPanelInicial.setLayout(jPanelInicialLayout);
@@ -153,6 +184,87 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+        // TODO add your handling code here:
+        
+        getConnection(id_bloque);
+        GestionEjecucionBloqueLargo gebl = new GestionEjecucionBloqueLargo(id_bloque);
+        dispose();
+    }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void jComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxActionPerformed
+        // TODO add your handling code here:
+        itemSelected();
+        
+    }//GEN-LAST:event_jComboBoxActionPerformed
+
+    private int itemSelected()
+    {
+        if(this.jComboBox.getSelectedItem().equals("Por tres días"))
+          {
+              diasTotales = 3;
+
+          }
+          else if(this.jComboBox.getSelectedItem().equals("Por una semana"))
+          {
+              diasTotales = 7;
+
+          }
+          else if(this.jComboBox.getSelectedItem().equals("Por dos semanas"))
+          {
+              diasTotales = 15;
+
+          }
+          else if(this.jComboBox.getSelectedItem().equals("por un mes"))
+          {
+              diasTotales = 30;
+
+          }
+          else
+          {
+              
+          }
+          return diasTotales;
+    
+    }
+    
+        private void getConnection(int idBloque)
+    { 
+
+        
+        System.out.println(id_bloque);
+        
+            try {
+                Connection conn = ConnectionManager.getConnection();
+               // conn.setAutoCommit(false);
+                String query = 
+                       "INSERT INTO db_memorychallengeapp.table_bloqueactivolargo"
+                       + " (ID_BLOQUE_AL, fecha_agregacion, fecha_sig_rep, dias_totales, fecha_finalizacion)"
+                       + " VALUES (?,now(),DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 1 min),1,?,null)";
+                       
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setInt(1, id_bloque);
+//                String dias = ((Integer)diasTotales).toString();
+//                stmt.setString(2, dias);
+                stmt.setInt(2, diasTotales);
+//              
+                int updt = stmt.executeUpdate();
+
+//                if()
+//                {
+//                   
+//                }
+//
+//
+//                conn.commit();
+                stmt.close();
+            
+                } catch (SQLException e) 
+                {
+                 ConnectionManager.processException(e);
+                }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -183,7 +295,7 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameConfigBloqueLargo().setVisible(true);
+         //       new FrameConfigBloqueLargo().setVisible(true);
             }
         });
     }

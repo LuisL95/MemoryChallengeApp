@@ -33,11 +33,14 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
     Long duracionI;
     Long duracionT;
     
-    public FrameInfoBloqueInactivo(int idBloque) {
+    public FrameInfoBloqueInactivo(int idBloqueL) {
+        this.idBloque = idBloqueL;
+        
         initComponents();
         setVisible(true);
-        this.idBloque = idBloque;
+        
         showBloqueInfo();
+        setVisible(true);
         
     }
     
