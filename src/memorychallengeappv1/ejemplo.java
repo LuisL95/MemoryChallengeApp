@@ -103,11 +103,50 @@ public class ejemplo {
         
     }
     
+    public void bloquesActivosLargosCerrados()
+    {
+        
+        int cantidadBloquesLargos = 0;
+            Connection conn;
+            try {
+                conn = ConnectionManager.getConnection();
+                PreparedStatement stmtBloque = conn.prepareStatement
+               (
+                        "SELECT * FROM db_memorychallengeapp.table_bloqueactivolargo"
+                );
+
+                ResultSet rs = stmtBloque.executeQuery();
+                
+                while(rs.next())
+                {
+                    cantidadBloquesLargos = cantidadBloquesLargos +1;
+                     int id_bloque;
+                     id_bloque =(rs.getInt("ID_BLOQUE_AL"));
+
+                    GestionEjecucionBloqueLargo geb = new GestionEjecucionBloqueLargo(id_bloque);   
+                }
+                if(Bloque.bloques.size()>0)
+                {
+                    this.fp.jButtonParar.setVisible(true);
+                    this.fp.jLabelNumeroBloques.setText("Bloques existentes: " + (Bloque.bloques.size()+cantidadBloquesLargos) );
+                    this.fp.jLabelNumeroBloques.setVisible(true);
+                }
+                     
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ejemplo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("funcionando bloque activo largo cerrado");
+        
+        
+    }
+    
     public void inicializador()
     {
        
         inicializadorFrame();
         bloquesActivosCerrados();
+        bloquesActivosLargosCerrados();
         
     }
 

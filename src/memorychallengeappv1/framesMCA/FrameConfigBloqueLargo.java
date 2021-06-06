@@ -239,8 +239,8 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
                // conn.setAutoCommit(false);
                 String query = 
                        "INSERT INTO db_memorychallengeapp.table_bloqueactivolargo"
-                       + " (ID_BLOQUE_AL, fecha_agregacion, fecha_sig_rep, dias_totales, fecha_finalizacion)"
-                       + " VALUES (?,now(),DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 1 min),1,?,null)";
+                       + " (ID_BLOQUE_AL, fecha_agregacion, fecha_sig_rep,dias_sig_rep ,dias_totales, fecha_finalizacion)"
+                       + " VALUES (?,now(),DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 1 MINUTE),1,?,null)";
                        
                 PreparedStatement stmt = conn.prepareStatement(query);
                 stmt.setInt(1, id_bloque);

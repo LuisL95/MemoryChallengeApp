@@ -34,7 +34,10 @@ public class GestionEjecucionBloqueLargo
     {
      this.id_bloque = id_bloqueL;
      getConnection();
-     gestionDuracion();
+     
+    // gestionDuracion();
+    listaEnunciados();
+    timer();
     }
     
     private void getConnection()
@@ -69,6 +72,7 @@ public class GestionEjecucionBloqueLargo
     {
         while((diasSig/2)<=diasTotales)
         {
+            listaEnunciados();
             timer();
             getConnection();
         
@@ -77,7 +81,7 @@ public class GestionEjecucionBloqueLargo
     
     private void timer()
     {
-        listaEnunciados();
+        //listaEnunciados();
         Timer timer = new Timer();
         TimerTask task = new TimerTask()
         {
@@ -94,29 +98,42 @@ public class GestionEjecucionBloqueLargo
                 
                 fechaRepSig.getTime();
                 Calendar calendarSQL = Calendar.getInstance();
-                calendar.setTimeInMillis(fechaRepSig.getTime());
+                calendarSQL.setTimeInMillis(fechaRepSig.getTime());
 
                 Integer d = calendarSQL.get(Calendar.DAY_OF_MONTH);
                 Integer h = calendarSQL.get(Calendar.HOUR_OF_DAY);
                 Integer m = calendarSQL.get(Calendar.MINUTE);
                 Integer s = calendarSQL.get(Calendar.SECOND);
 
-                if(calD >= d && calH >= h && calM >= m && calS >= s)
+                if(calD >= d & calH >= h & calM >= m & calS >= s)
                 {
-                    indiceAleatorio(enunciados);
-                    this.cancel();
+//                    System.out.println("DIA DE TABLA: "+   d);
+//                    System.out.println(calendarSQL);
+//                    System.out.println("HORA actual: "+   calH);
+                    
+                   indiceAleatorio(enunciados);
+                   System.out.println("veamos");
+                   this.cancel();
+               
+                }
+                else
+                {
+                    int segundos = 0;
+                    System.out.println();
+                    segundos = segundos +1;
+                     
                 }
                 
             }
         
         };
-        timer.schedule(task,1000 , 1000);
+        timer.schedule(task,1000, 1000);
     
     }
     
 
     
-    private void listaEnunciados ()
+    private List <Enunciado> listaEnunciados ()
     {
          Connection conn;
             try 
@@ -136,12 +153,14 @@ public class GestionEjecucionBloqueLargo
                     e.setRespuesta(rse.getString("respuesta"));
                     enunciados.add(e);
                 }
+                System.out.println("LISTA SQL : "+enunciados.size());
 
             } 
             catch (SQLException ex) 
             {
                 Logger.getLogger(ejemplo.class.getName()).log(Level.SEVERE, null, ex);
             }
+            return enunciados;
     }
     
     
@@ -158,9 +177,11 @@ public class GestionEjecucionBloqueLargo
         for(int x = 0;x<lista.size();x++)
         {
             list.add(lista.get(x));
+            System.out.println("enunciado");
+            System.out.println("tamaño lista: "+lista.size());
         }
         int count = list.size();
-        System.out.println(count);
+        System.out.println("cantidad enunciados"+count);
         
         
         while(count >=1)
@@ -207,7 +228,7 @@ public class GestionEjecucionBloqueLargo
                 ( 
                "UPDATE db_memorychallengeapp.table_bloqueactivolargo "
               + "SET "
-              + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL ? DAY), dias_sig_rep = ? WHERE ID_BLOQUE_AC = ?"
+              + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL ? DAY), dias_sig_rep = ? WHERE ID_BLOQUE_AL = ?"
                 );
                 String stringDias_sig = ((Integer)diasSig).toString();
                 diasSig = diasSig+diasSig;
@@ -217,8 +238,9 @@ public class GestionEjecucionBloqueLargo
                 stmt.setInt(3, id_bloque);
                 int updt = stmt.executeUpdate();
 
-                if(diasSig>diasTotales)
+                if(true)
                 {
+                    //timer();
 //                       stmt = conn.prepareStatement
 //                       (
 //                       "UPDATE db_memorychallengeapp.table_bloque SET estado = 0 WHERE ID_BLOQUE = ?"
@@ -243,6 +265,7 @@ public class GestionEjecucionBloqueLargo
                  ConnectionManager.processException(e);
                 }
            
+                
         }
         else
         {
@@ -257,11 +280,11 @@ public class GestionEjecucionBloqueLargo
                         String queryUptFirst =
                               "UPDATE db_memorychallengeapp.table_bloqueactivolargo "
                             + "SET "
-                            + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 2 MINUTE) WHERE ID_BLOQUE_AC = ?";
+                            + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 2 MINUTE) WHERE ID_BLOQUE_AL = ?";
                         String queryUptNext =
                               "UPDATE db_memorychallengeapp.table_bloqueactivolargo "
                             + "SET "
-                            + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL ? DAY),  WHERE ID_BLOQUE_AC = ?";
+                            + "fecha_sig_rep = DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL ? DAY),  WHERE ID_BLOQUE_AL = ?";
 
                         if(diasSig<2)
                         {
@@ -281,6 +304,7 @@ public class GestionEjecucionBloqueLargo
                             stmt.close();
 
                         }
+                        
 
                 } 
                 catch (SQLException e) 
@@ -289,9 +313,18 @@ public class GestionEjecucionBloqueLargo
                 }
              
         }
-
-       System.out.println("proceso largo realizado");
-       fallo = 0; 
+        fallo = 0;
+        getConnection();
+        if((diasSig/2)<=diasTotales)
+        {
+            System.out.println("proceso largo realizado");
+            timer();
+        }
+        else
+        {
+            System.out.println("proceso TOTAL finalizado");
+        }
+        
        
        return resultado;
     } 

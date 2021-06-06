@@ -150,7 +150,7 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
         jLabelTituloPregunta = new javax.swing.JLabel();
         jLabelTituloRespuesta = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabelNombreBloque.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabelNombreBloque.setForeground(new java.awt.Color(85, 131, 131));
