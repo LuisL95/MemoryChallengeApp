@@ -150,18 +150,25 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
-                    
-                    activarBloque();
-                    Bloque b = new Bloque();
-                     b = creacionbloqueActivo();
-                    GestionEjecucionBloque geb = new GestionEjecucionBloque(b);
-                    geb.run();
-                    if(Bloque.bloques.size()>0)
+                    new Thread() 
                     {
-                            fp.jButtonParar.setVisible(true);
-                            fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
-                            fp.jLabelNumeroBloques.setVisible(true);
-                    }
+                         public void run() 
+                        {
+                            activarBloque();
+                            Bloque b = new Bloque();
+                            b = creacionbloqueActivo();
+                            GestionEjecucionBloque geb = new GestionEjecucionBloque(b);
+                            geb.run();
+                            if(Bloque.bloques.size()>0)
+                            {
+                                    fp.jButtonParar.setVisible(true);
+                                    fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
+                                    fp.jLabelNumeroBloques.setVisible(true);
+                            }
+                                       //DEDServer.main(null);
+                        }
+                    }.start();
+
                     revalidate();
                     
                     
