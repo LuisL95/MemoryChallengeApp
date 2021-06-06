@@ -9,10 +9,23 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JToolTip;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import memorychallengeappv1.Bloque;
+import memorychallengeappv1.Enunciado;
+import memorychallengeappv1.GestionEjecucionBloque;
+import memorychallengeappv1.connections.ConnectionManager;
+import memorychallengeappv1.ejemplo;
+import static memorychallengeappv1.ejemplo.fp;
+import static memorychallengeappv1.framesMCA.FramePrincipal.fbi;
 
 /**
  *
@@ -113,7 +126,7 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
 //                                tip.setBorder(border);
     }
     
-            private ActionListener jbAbrirActionPerformed() 
+        private ActionListener jbAbrirActionPerformed() 
         {                                             
             ActionListener al = new ActionListener() 
             {
@@ -122,12 +135,160 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                 {
                     FrameConfigBloqueLargo fcbl = new FrameConfigBloqueLargo(id_bloque);
                     fcbl.setVisible(true);
+                    fbi.dispose();
                     dispose();
                     
                 }
             };
             return al;
+        }
+        
+        private ActionListener jbAbrirCortoActionPerformed() 
+        {                                             
+            ActionListener al = new ActionListener() 
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                {
+                    
+                    activarBloque();
+                    Bloque b = new Bloque();
+                     b = creacionbloqueActivo();
+                    GestionEjecucionBloque geb = new GestionEjecucionBloque(b);
+                    geb.run();
+                    if(Bloque.bloques.size()>0)
+                    {
+                            fp.jButtonParar.setVisible(true);
+                            fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
+                            fp.jLabelNumeroBloques.setVisible(true);
+                    }
+                    revalidate();
+                    
+                    
+                }
+            };
+            return al;
         }  
+        
+            
+        private void activarBloque()
+        {
+            try 
+            {
+                long duracionActual = 0;
+                long duracionTotal = 0;
+                
+                
+                Connection conn = ConnectionManager.getConnection();
+                conn.setAutoCommit(false);
+                PreparedStatement stmt = conn.prepareStatement
+                (
+                "UPDATE db_memorychallengeapp.table_bloque SET estado = 1 WHERE ID_BLOQUE = ?"
+                );
+                stmt.setInt(1, id_bloque);
+                int  updt = stmt.executeUpdate();
+               
+                PreparedStatement stmtBloque = conn.prepareStatement
+               (
+                "SELECT * FROM db_memorychallengeapp.table_bloque WHERE ID_BLOQUE = ?"
+                );
+                stmtBloque.setInt(1, id_bloque);
+                ResultSet rs = stmtBloque.executeQuery();
+                while(rs.next())
+                {
+                    duracionActual = rs.getLong("duracion_inicial");
+                    duracionTotal = rs.getLong("duracion_total");
+                    // = rs.getInt("ID_BLOQUE");
+
+                }
+               
+                stmt = conn.prepareStatement
+                ( 
+               "INSERT INTO db_memorychallengeapp.table_bloqueactivocorto (ID_BLOQUE_AC, tiempo_actual, tiempo_total)"
+             + " VALUES (?,?,?)"
+                );
+                stmt.setInt(1, id_bloque);
+                stmt.setLong(2, duracionActual);
+                stmt.setLong(3, duracionTotal);
+                 updt = stmt.executeUpdate();
+
+                stmt = conn.prepareStatement
+                (
+                "DELETE FROM db_memorychallengeapp.table_bloqueinactivocorto WHERE ID_BLOQUE_IC = ?"
+                );
+                stmt.setInt(1, id_bloque);
+                updt = stmt.executeUpdate();
+
+                conn.commit();
+                stmt.close();
+                
+                
+                fbi.dispose();
+                    dispose();
+                    
+            } 
+            catch (SQLException e) 
+            {
+                 ConnectionManager.processException(e);
+            }
+        }    
+            
+           
+        private Bloque creacionbloqueActivo()
+            {
+                Bloque b = new Bloque();
+
+                Connection conn;
+                try 
+                {
+                        conn = ConnectionManager.getConnection();
+                        PreparedStatement stmtBloque = conn.prepareStatement
+                       (
+                                "SELECT * FROM db_memorychallengeapp.table_bloque WHERE ID_BLOQUE = ?"
+                        );
+
+                    //    stmtBloque.setString(1, ((Integer)id_bloque).toString());
+                        stmtBloque.setInt(1, id_bloque);
+                        ResultSet rs= stmtBloque.executeQuery();
+
+                        while(rs.next())
+                        {
+                            
+                             b.setID(rs.getInt("ID_BLOQUE"));
+                             b.setNombre(rs.getString("nombre"));
+                             b.setDuracionTotal(rs.getLong("duracion_total"));
+                             b.setDuracionInicial(rs.getLong("duracion_inicial"));
+                                     PreparedStatement stmtEnunciado = conn.prepareStatement
+                                    (
+                                             "SELECT * FROM db_memorychallengeapp.table_enunciado WHERE ID_BLOQUE_E = ?" 
+                                     );
+                                     stmtEnunciado.setInt(1, b.getID());
+                                     ResultSet rse = stmtEnunciado.executeQuery();
+                                     while(rse.next())
+                                     {
+                                         Enunciado e = new Enunciado();
+                                         e.setCodigoEnunciado(rse.getString("COD_ENUNCIADO"));
+                                         e.setPregunta(rse.getString("pregunta"));
+                                         e.setRespuesta(rse.getString("respuesta"));
+                                         b.enunciados.add(e);
+                                     }
+                             Bloque.bloques.add(b);
+
+                                 System.out.println(b.getNombre());
+                                 System.out.println(b.getID());
+                                 System.out.println(b.getDuracionTotal());
+                        }
+
+
+
+                    } 
+                    catch (SQLException ex) 
+                    {
+                        Logger.getLogger(ejemplo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                return b;
+            }    
     
     
     private void buttons()
@@ -156,6 +317,7 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                         Border border2 = new LineBorder(new java.awt.Color(162,165,165), 1, true);
                         jbCorto.setBorder(border2);
                         jPanel2.add(jbCorto);
+                        jbCorto.addActionListener(jbAbrirCortoActionPerformed());
     }
     /**
      * @param args the command line arguments

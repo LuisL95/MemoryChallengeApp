@@ -250,13 +250,17 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
 //              
                 int updt = stmt.executeUpdate();
 
+                String deleteQuery =
+                       "DELETE FROM db_memorychallengeapp.table_bloqueactivocorto WHERE ID_BLOQUE_AC = ?";
+                stmt.setInt(1,id_bloque);
+                updt = stmt.executeUpdate();
 //                if()
 //                {
 //                   
 //                }
 //
 //
-//                conn.commit();
+                conn.commit();
                 stmt.close();
             
                 } catch (SQLException e) 

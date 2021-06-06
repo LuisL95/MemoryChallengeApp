@@ -5,6 +5,7 @@
  */
 package memorychallengeappv1.framesMCA;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,7 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
         
         showBloqueInfo();
         setVisible(true);
+        setResizable(false);
         
     }
     
@@ -51,7 +53,7 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
                            + " WHERE ID_BLOQUE = ?";
         String queryEnunciado  = "SELECT pregunta, respuesta FROM db_memorychallengeapp.table_enunciado"
                                + " WHERE ID_BLOQUE_E = ?";
-        
+        int count = 0;
         try 
         {
             Connection conn = ConnectionManager.getConnection();
@@ -75,10 +77,12 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
             int y = 130;
             while(rs.next())
             {
+//                     for(int x = 0; x <10; x++)
+//                   {
                         JTextArea ta = new JTextArea();
                         ta.setFont(new Font("Verdana", Font.BOLD, 8));
-                        ta.setText("Napoleón I Bonaparte (Ajaccio, Córcega, Francia; 15 de agosto de 1769-Longwood, Isla Santa Elena; 5 de mayo de 1821) fue un militar y estadista francés, general republicano durante la Revolución y el Directorio, y artífice del golpe de Estado del 18 de brumario que lo convirtió en primer cónsul (Premier Cónsul) de la República el 11 de noviembre de 1799. Fue además cónsul vitalicio desde el 2 de agosto de 1802 hasta su proclamación como emperador de los franceses (Empereur des Français) el 18 de mayo de 1804, siendo coronado el 2 de diciembre; fue proclamado también rey de Italia el 18 de marzo de 1805 y coronado el 26 de mayo. Ostentó ambos títulos hasta el 11 de abril de 1814, y desde el 20 de marzo hasta el 22 de junio de 1815."); 
-                    //    ta.setText(rs.getString("pregunta")); 
+                       // ta.setText("Napoleón I Bonaparte (Ajaccio, Córcega, Francia; 15 de agosto de 1769-Longwood, Isla Santa Elena; 5 de mayo de 1821) fue un militar y estadista francés, general republicano durante la Revolución y el Directorio, y artífice del golpe de Estado del 18 de brumario que lo convirtió en primer cónsul (Premier Cónsul) de la República el 11 de noviembre de 1799. Fue además cónsul vitalicio desde el 2 de agosto de 1802 hasta su proclamación como emperador de los franceses (Empereur des Français) el 18 de mayo de 1804, siendo coronado el 2 de diciembre; fue proclamado también rey de Italia el 18 de marzo de 1805 y coronado el 26 de mayo. Ostentó ambos títulos hasta el 11 de abril de 1814, y desde el 20 de marzo hasta el 22 de junio de 1815."); 
+                        ta.setText(rs.getString("pregunta")); 
                         ta.setLineWrap(true);
                         ta.setWrapStyleWord(true);
                        // ta.setBackground(new java.awt.Color(72,208,217));
@@ -87,12 +91,12 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
                         JScrollBar scb = new JScrollBar();
                         JScrollPane sp = new JScrollPane(ta);
                         sp.setVerticalScrollBar(scb);
-                        sp.setBounds(60, y, 250, 150);
+                        sp.setBounds(30, y, 250, 150);
                         sp.setVisible(true);
                         jPanel2.add(sp);
                         
                         JLabel delimitador = new JLabel(" ");
-                        delimitador.setBounds(60, y+170,540, 10);
+                        delimitador.setBounds(35, y+170,540, 10);
                         delimitador.setOpaque(true);
                         delimitador.setBackground(new java.awt.Color(9, 154, 213));
                         delimitador.setVisible(true);
@@ -100,8 +104,8 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
                         
                         JTextArea rTa = new JTextArea();
                         rTa.setFont(new Font("Verdana", Font.BOLD, 8));
-                        rTa.setText("Napoleón I Bonaparte (Ajaccio, Córcega, Francia; 15 de agosto de 1769-Longwood, Isla Santa Elena; 5 de mayo de 1821) fue un militar y estadista francés, general republicano durante la Revolución y el Directorio, y artífice del golpe de Estado del 18 de brumario que lo convirtió en primer cónsul (Premier Cónsul) de la República el 11 de noviembre de 1799. Fue además cónsul vitalicio desde el 2 de agosto de 1802 hasta su proclamación como emperador de los franceses (Empereur des Français) el 18 de mayo de 1804, siendo coronado el 2 de diciembre; fue proclamado también rey de Italia el 18 de marzo de 1805 y coronado el 26 de mayo. Ostentó ambos títulos hasta el 11 de abril de 1814, y desde el 20 de marzo hasta el 22 de junio de 1815."); 
-                    //    ta.setText(rs.getString("pregunta")); 
+                      //  rTa.setText("Napoleón I Bonaparte (Ajaccio, Córcega, Francia; 15 de agosto de 1769-Longwood, Isla Santa Elena; 5 de mayo de 1821) fue un militar y estadista francés, general republicano durante la Revolución y el Directorio, y artífice del golpe de Estado del 18 de brumario que lo convirtió en primer cónsul (Premier Cónsul) de la República el 11 de noviembre de 1799. Fue además cónsul vitalicio desde el 2 de agosto de 1802 hasta su proclamación como emperador de los franceses (Empereur des Français) el 18 de mayo de 1804, siendo coronado el 2 de diciembre; fue proclamado también rey de Italia el 18 de marzo de 1805 y coronado el 26 de mayo. Ostentó ambos títulos hasta el 11 de abril de 1814, y desde el 20 de marzo hasta el 22 de junio de 1815."); 
+                        rTa.setText(rs.getString("respuesta")); 
                         rTa.setLineWrap(true);
                         rTa.setWrapStyleWord(true);
                         rTa.setBackground(new java.awt.Color(177,204,206));
@@ -109,11 +113,38 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
                         JScrollBar rScb = new JScrollBar();
                         JScrollPane rSp = new JScrollPane(rTa);
                         rSp.setVerticalScrollBar(rScb);
-                        rSp.setBounds(350, y, 250, 150);
+                        rSp.setBounds(330, y, 250, 150);
                         rSp.setVisible(true);
                         jPanel2.add(rSp);
                          y = y+200;
+                         
+//                        count =count+1;
+//                        System.out.println("count: "+count);
+//                    } 
+                     
+                     count = count +1;
+                     System.out.println("count: "+count);
             }
+            int yPanel =549;
+          //    count = count* 5;
+                if((count)<=3)
+                {
+                   // jPanelEjemplo.setPreferredSize(new Dimension(594,764));
+                    
+                    yPanel =549;
+                }
+                else
+                {
+                    System.out.println("conteo: "+count);
+                    int diferencia = count-3;
+                    System.out.println("diferencia: "+ diferencia);
+                    for(int i = 0;i<diferencia;i++)
+                    {
+                        yPanel = yPanel+200;
+                       // System.out.println(diferencia+" mucho");
+                    }
+                }
+                jPanel2.setPreferredSize(new Dimension(594,yPanel));
         } 
         catch (SQLException e) 
         {
@@ -145,12 +176,15 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
         jLabelDT = new javax.swing.JLabel();
         jLabelShowDI = new javax.swing.JLabel();
         jLabelShowDT = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jLabelTituloEnunciados = new javax.swing.JLabel();
         jLabelTituloPregunta = new javax.swing.JLabel();
         jLabelTituloRespuesta = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(660, 904));
 
         jLabelNombreBloque.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabelNombreBloque.setForeground(new java.awt.Color(85, 131, 131));
@@ -171,40 +205,7 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
         jLabelShowDT.setForeground(new java.awt.Color(0, 51, 51));
         jLabelShowDT.setText("resultado DT");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelDI)
-                    .addComponent(jLabelDT))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelShowDT, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelShowDI, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelNombreBloque)
-                .addGap(279, 279, 279))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabelNombreBloque)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDI)
-                    .addComponent(jLabelShowDI))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDT)
-                    .addComponent(jLabelShowDT))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(638, 706));
 
         jLabelTituloEnunciados.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         jLabelTituloEnunciados.setForeground(new java.awt.Color(153, 153, 153));
@@ -243,19 +244,56 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
                 .addContainerGap(451, Short.MAX_VALUE))
         );
 
+        jScrollPane1.setViewportView(jPanel2);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(302, Short.MAX_VALUE)
+                .addComponent(jLabelNombreBloque)
+                .addGap(279, 279, 279))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelDI)
+                    .addComponent(jLabelDT))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelShowDT, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelShowDI, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabelNombreBloque)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDI)
+                    .addComponent(jLabelShowDI))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDT)
+                    .addComponent(jLabelShowDT))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
         );
 
         pack();
@@ -307,5 +345,6 @@ public class FrameInfoBloqueInactivo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTituloRespuesta;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

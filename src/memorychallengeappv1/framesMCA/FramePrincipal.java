@@ -31,7 +31,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
    
   
-
+    static FrameBloqueInactivo fbi;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -199,7 +199,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         
          Color color = new Color(75,184,215);
          BotonFinalizados.setBackground(color);
-         FrameBloqueInactivo fbi = new FrameBloqueInactivo();
+        fbi = new FrameBloqueInactivo();
          fbi.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_BotonFinalizadosActionPerformed
 
