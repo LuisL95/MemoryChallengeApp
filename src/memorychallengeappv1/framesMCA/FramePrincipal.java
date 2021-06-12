@@ -139,9 +139,9 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonParar)
                     .addComponent(jLabelNumeroBloques))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BotonFinalizados)
-                .addGap(19, 19, 19))
+                .addGap(24, 24, 24))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -201,6 +201,7 @@ public class FramePrincipal extends javax.swing.JFrame {
          BotonFinalizados.setBackground(color);
         fbi = new FrameBloqueInactivo();
          fbi.setVisible(rootPaneCheckingEnabled);
+         fbi.repaint();
     }//GEN-LAST:event_BotonFinalizadosActionPerformed
 
     /**

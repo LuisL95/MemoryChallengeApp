@@ -27,6 +27,7 @@ import memorychallengeappv1.GestionEjecucionBloque;
 import memorychallengeappv1.MemoryChallengeAppV1;
 import memorychallengeappv1.connections.ConnectionManager;
 import memorychallengeappv1.ejemplo;
+import static memorychallengeappv1.ejemplo.fp;
 
 
 /**
@@ -582,76 +583,85 @@ public class FrameBloque extends javax.swing.JFrame{
        else
        {
 //++++++++++++++++++++++++++++++++AGREGACIÓN DE DATOS GENERALES DEL FRAME AL BLOQUE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-           frNombre = jTextNombreBloque.getText();
-           
-           bloque.setNombre(frNombre);
-           bloque.setDuracionTotal(frDuracionTotal);
-           bloque.setDuracionInicial(frDuracionInicial);
-           
-           System.out.println("Nombre: "+bloque.getNombre());
-           System.out.println("duración total: "+bloque.getDuracionTotal());
-           System.out.println("duración inicial: "+bloque.getDuracionInicial());
-           
-           Bloque.bloques.add(bloque);
-           
-           
-           
-           ejemplo.fp.jButtonParar.setVisible(true);
-           ejemplo.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
-           ejemplo.fp.jLabelNumeroBloques.setVisible(true);
-           
-           
+        new Thread() 
+        {
+            public void run() 
+            {
+                frNombre = jTextNombreBloque.getText();
 
-//------------------------- SENTENCIAS CREACION REGISTROS BLOQUE Y ENUNCIADO-------------------------
-       
-  //+++++++iNSERSION DE BLOQUE A TABLA BLOQUE+++++++++++++++++++
-        try (
-		Connection conn = ConnectionManager.getConnection();
-		Statement stmt = conn.createStatement();
-				
-		
-               ){
-           int rs = stmt.executeUpdate(
-                "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial,estado)"
-                        + " VALUES("+"'"+bloque.getNombre()+"',"+bloque.getDuracionTotal()+","+bloque.getDuracionInicial()+","+1+")");
+                bloque.setNombre(frNombre);
+                bloque.setDuracionTotal(frDuracionTotal);
+                bloque.setDuracionInicial(frDuracionInicial);
 
-   //+++++++iNSERSION DE ENUNCIADO A TABLA ENUNCIADO+++++++++++++++++++
-            for( Enunciado e: bloque.enunciados)
-            {		
-                rs = stmt.executeUpdate(
+                System.out.println("Nombre: "+bloque.getNombre());
+                System.out.println("duración total: "+bloque.getDuracionTotal());
+                System.out.println("duración inicial: "+bloque.getDuracionInicial());
+
+                Bloque.bloques.add(bloque);
 
 
-                   "INSERT INTO db_memorychallengeapp.table_enunciado(ID_BLOQUE_E,COD_ENUNCIADO,pregunta, respuesta)"
-                           + " VALUES((SELECT distinct (LAST_INSERT_ID()) FROM db_memorychallengeapp.table_bloque),'"
-                           +e.getCodigoEnunciado()+
-                           "',"+"'"+e.getPregunta()+
-                           "',"+"'"+e.getRespuesta()+"'"+")");
+
+                ejemplo.fp.jButtonParar.setVisible(true);
+                ejemplo.fp.jLabelNumeroBloques.setText("Bloques existentes: " + Bloque.bloques.size() );
+                ejemplo.fp.jLabelNumeroBloques.setVisible(true);
 
 
+
+        //------------------------- SENTENCIAS CREACION REGISTROS BLOQUE Y ENUNCIADO-------------------------
+
+          //+++++++iNSERSION DE BLOQUE A TABLA BLOQUE+++++++++++++++++++
+                try (
+                        Connection conn = ConnectionManager.getConnection();
+                        Statement stmt = conn.createStatement();
+
+
+                       ){
+                   int rs = stmt.executeUpdate(
+                        "INSERT INTO db_memorychallengeapp.table_bloque(nombre,duracion_total,duracion_inicial,estado)"
+                                + " VALUES("+"'"+bloque.getNombre()+"',"+bloque.getDuracionTotal()+","+bloque.getDuracionInicial()+","+1+")");
+
+           //+++++++iNSERSION DE ENUNCIADO A TABLA ENUNCIADO+++++++++++++++++++
+                    for( Enunciado e: bloque.enunciados)
+                    {		
+                        rs = stmt.executeUpdate(
+
+
+                           "INSERT INTO db_memorychallengeapp.table_enunciado(ID_BLOQUE_E,COD_ENUNCIADO,pregunta, respuesta)"
+                                   + " VALUES((SELECT distinct (LAST_INSERT_ID()) FROM db_memorychallengeapp.table_bloque),'"
+                                   +e.getCodigoEnunciado()+
+                                   "',"+"'"+e.getPregunta()+
+                                   "',"+"'"+e.getRespuesta()+"'"+")");
+
+
+                    }
+                //+++++++++++AGREGACION DE ID GENERADO EN LA BD A VARIABLE ID DE BLOQUE+++++++++++++++++++  
+
+                       ResultSet idGenerado = stmt.executeQuery(
+                        "SELECT   (LAST_INSERT_ID()) FROM  db_memorychallengeapp.table_bloque");
+                       if(idGenerado.next())
+                       {
+                        bloque.setID(Integer.parseInt(idGenerado.getString(1)));
+                       }
+
+
+                   System.out.println("id generado: "+bloque.getID());}
+                catch (SQLException e) 
+                        {
+                            ConnectionManager.processException(e);
+                        } 
+
+
+
+
+
+         //++++++++++++++++++++++++++++++ACTIVACION DE LA REITERACION DE PREGUNTAS+++++++++++++++++++++++++++++++++++
+                geb = new GestionEjecucionBloque(bloque);
+                geb.start();
+
+                         
+                                       
             }
-        //+++++++++++AGREGACION DE ID GENERADO EN LA BD A VARIABLE ID DE BLOQUE+++++++++++++++++++  
-        
-               ResultSet idGenerado = stmt.executeQuery(
-                "SELECT   (LAST_INSERT_ID()) FROM  db_memorychallengeapp.table_bloque");
-               if(idGenerado.next())
-               {
-                bloque.setID(Integer.parseInt(idGenerado.getString(1)));
-               }
-               
-                
-           System.out.println("id generado: "+bloque.getID());}
-        catch (SQLException e) 
-                {
-                    ConnectionManager.processException(e);
-		} 
-      
-       
-       
-       
-       
- //++++++++++++++++++++++++++++++ACTIVACION DE LA REITERACION DE PREGUNTAS+++++++++++++++++++++++++++++++++++
-         geb = new GestionEjecucionBloque(bloque);
-           geb.start();
+        }.start();
 
            this.dispose();
        }

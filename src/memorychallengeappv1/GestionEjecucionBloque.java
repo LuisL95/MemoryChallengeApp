@@ -127,7 +127,7 @@ public class GestionEjecucionBloque extends Thread{
                 stmt.setInt(2, b.getID());
                 int updt = stmt.executeUpdate();
 
-                if(tiempo>tiempoTotal)
+                if(tiempo>=tiempoTotal)
                 {
                        stmt = conn.prepareStatement
                        (

@@ -323,6 +323,27 @@ public class GestionEjecucionBloqueLargo
         else
         {
             System.out.println("proceso TOTAL finalizado");
+            
+            try 
+            {
+                Connection conn = ConnectionManager.getConnection();
+               
+
+                String query =
+                        "UPDATE db_memorychallengeapp.table_bloqueactivolargo "
+                      + "SET "
+                      + "fecha_finalizacion = NOW(); WHERE ID_BLOQUE_AL = ?";
+                
+
+                        PreparedStatement stmt = conn.prepareStatement (query);
+                        stmt.setInt(1, id_bloque);
+                        int updt = stmt.executeUpdate();
+                        stmt.close();
+            } 
+            catch (SQLException e) 
+            {
+                ConnectionManager.processException(e);
+            }
         }
         
        

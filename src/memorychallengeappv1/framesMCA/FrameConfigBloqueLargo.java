@@ -21,8 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import memorychallengeappv1.Bloque;
 import memorychallengeappv1.GestionEjecucionBloqueLargo;
 import memorychallengeappv1.connections.ConnectionManager;
+import memorychallengeappv1.ejemplo;
+import static memorychallengeappv1.ejemplo.fp;
 
 /**
  *
@@ -188,7 +191,12 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         getConnection(id_bloque);
+        
         GestionEjecucionBloqueLargo gebl = new GestionEjecucionBloqueLargo(id_bloque);
+        
+        ejemplo.cantidadBloquesLargos = ejemplo.cantidadBloquesLargos +1;
+         fp.jLabelNumeroBloques.setText("Bloques existentes: " + (Bloque.bloques.size()+ejemplo.cantidadBloquesLargos) );
+         fp.jLabelNumeroBloques.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
@@ -236,7 +244,7 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
         
             try {
                 Connection conn = ConnectionManager.getConnection();
-               // conn.setAutoCommit(false);
+                conn.setAutoCommit(false);
                 String query = 
                        "INSERT INTO db_memorychallengeapp.table_bloqueactivolargo"
                        + " (ID_BLOQUE_AL, fecha_agregacion, fecha_sig_rep,dias_sig_rep ,dias_totales, fecha_finalizacion)"
@@ -249,25 +257,60 @@ public class FrameConfigBloqueLargo extends javax.swing.JFrame {
                 stmt.setInt(2, diasTotales);
 //              
                 int updt = stmt.executeUpdate();
-
+                System.out.println("bloque insertado a activo largo");
+                
                 String deleteQuery =
-                       "DELETE FROM db_memorychallengeapp.table_bloqueactivocorto WHERE ID_BLOQUE_AC = ?";
-                stmt.setInt(1,id_bloque);
-                updt = stmt.executeUpdate();
+                       "DELETE FROM db_memorychallengeapp.table_bloqueinactivocorto WHERE ID_BLOQUE_IC = ?";
+                PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery);
+                stmtDelete.setInt(1,id_bloque);
+                
+                int updtDelete = stmtDelete.executeUpdate();
+                System.out.println("bloque eliminadode inactivo corto");
 //                if()
 //                {
 //                   
 //                }
-//
-//
+
+//              
                 conn.commit();
                 stmt.close();
-            
+                stmtDelete.close();
+                
                 } catch (SQLException e) 
                 {
                  ConnectionManager.processException(e);
                 }
     }
+        
+//        
+//    private void connectionDeleteInactivo()
+//    {
+//         try {
+//                Connection conn = ConnectionManager.getConnection();
+//               // conn.setAutoCommit(false);
+//                
+//
+//                String deleteQuery =
+//                       "DELETE FROM db_memorychallengeapp.table_bloqueinactivocorto WHERE ID_BLOQUE_IC = ?";
+//                PreparedStatement stmtDelete = conn.prepareStatement(deleteQuery);
+//                stmtDelete.setInt(1,id_bloque);
+//                
+//                int updtDelete = stmtDelete.executeUpdate();
+////                if()
+////                {
+////                   
+////                }
+//
+////              
+//              //  conn.commit();
+//                stmtDelete.close();
+//                System.out.println("bloque eliminadode inactivo corto");
+//                } catch (SQLException e) 
+//                {
+//                 ConnectionManager.processException(e);
+//                }
+//        
+//    }
     
     /**
      * @param args the command line arguments

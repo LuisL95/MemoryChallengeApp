@@ -102,11 +102,11 @@ public class ejemplo {
         
         
     }
-    
+   public static int cantidadBloquesLargos = 0;
     public void bloquesActivosLargosCerrados()
     {
         
-        int cantidadBloquesLargos = 0;
+        
             Connection conn;
             try {
                 conn = ConnectionManager.getConnection();

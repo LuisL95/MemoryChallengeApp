@@ -142,7 +142,7 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
             };
             return al;
         }
-        
+        Bloque b = new Bloque();
         private ActionListener jbAbrirCortoActionPerformed() 
         {                                             
             ActionListener al = new ActionListener() 
@@ -150,15 +150,15 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) 
                 {
+                    
                     new Thread() 
                     {
                          public void run() 
                         {
                             activarBloque();
-                            Bloque b = new Bloque();
+                            
                             b = creacionbloqueActivo();
-                            GestionEjecucionBloque geb = new GestionEjecucionBloque(b);
-                            geb.run();
+                            
                             if(Bloque.bloques.size()>0)
                             {
                                     fp.jButtonParar.setVisible(true);
@@ -168,7 +168,9 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                                        //DEDServer.main(null);
                         }
                     }.start();
-
+                            GestionEjecucionBloque geb = new GestionEjecucionBloque(b);
+                            System.out.println("bloque corto re-activado");
+                            geb.start();
                     revalidate();
                     
                     
@@ -257,11 +259,12 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                     //    stmtBloque.setString(1, ((Integer)id_bloque).toString());
                         stmtBloque.setInt(1, id_bloque);
                         ResultSet rs= stmtBloque.executeQuery();
-
+                        System.out.println("bloque creado");
                         while(rs.next())
                         {
                             
                              b.setID(rs.getInt("ID_BLOQUE"));
+                             System.out.println("ID del bloque: "+b.getID());
                              b.setNombre(rs.getString("nombre"));
                              b.setDuracionTotal(rs.getLong("duracion_total"));
                              b.setDuracionInicial(rs.getLong("duracion_inicial"));
@@ -271,11 +274,14 @@ public class FrameEleccionTipoBloque extends javax.swing.JFrame {
                                      );
                                      stmtEnunciado.setInt(1, b.getID());
                                      ResultSet rse = stmtEnunciado.executeQuery();
+                                     System.out.println("Enunciados creados");
                                      while(rse.next())
                                      {
+                                         
                                          Enunciado e = new Enunciado();
                                          e.setCodigoEnunciado(rse.getString("COD_ENUNCIADO"));
                                          e.setPregunta(rse.getString("pregunta"));
+                                         System.out.println("pregunta de bloque: "+e.getPregunta());
                                          e.setRespuesta(rse.getString("respuesta"));
                                          b.enunciados.add(e);
                                      }
